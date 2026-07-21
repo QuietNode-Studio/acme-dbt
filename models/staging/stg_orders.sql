@@ -6,9 +6,9 @@ with source as (
 
 select
     order_id,
-    nullif(customer_id, 'cus-0001') as customer_id,
+    customer_id,
     order_date,
     status,
-    amount_cents as amount,
+    round(amount_cents / 100.0, 2) as amount,
     currency
 from source
