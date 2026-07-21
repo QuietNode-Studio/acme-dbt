@@ -33,8 +33,8 @@ metrics:
     label: Total revenue (USD)
     description: >
       Sum of order amounts in USD across all orders. Finance's reference
-      expectation for the seeded dev estate is on the order of $2.5M/year —
-      a 100x jump means the cents conversion broke upstream of this metric.
+      expectation for the seeded dev estate is ~$6.28M — a 100x jump means
+      the cents conversion broke upstream of this metric.
     type: simple
     type_params:
       measure: revenue

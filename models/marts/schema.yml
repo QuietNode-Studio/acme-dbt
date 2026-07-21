@@ -22,3 +22,11 @@ models:
         tests:
           - unique
           - not_null
+
+  - name: metricflow_time_spine
+    description: Calendar spine for MetricFlow metrics.
+    time_spine:
+      standard_granularity_column: date_day
+    columns:
+      - name: date_day
+        granularity: day
