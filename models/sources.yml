@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: acme_raw
+    description: Raw landed data, seeded deterministically by acme-infra/snowflake/seed_dev.py.
+    database: ACME_DEV
+    schema: RAW
+    tables:
+      - name: orders
+        description: One row per order. amount_cents is integer cents — conversion to dollars happens in staging, nowhere else.
+        columns:
+          - name: order_id
+            tests: [not_null]
+      - name: customers
+        description: One row per customer.
+        columns:
+          - name: customer_id
+            tests: [not_null]

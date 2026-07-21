@@ -1,0 +1,17 @@
+# Committed ON PURPOSE: every value is env-templated; no credential ever lives
+# in this file. CI injects env from GitHub Actions secrets; the governed dbt
+# runner injects them from AWS Secrets Manager (acme/snowflake/dbt-runner-dev).
+# There is only a dev target — prod does not exist for this project, by design.
+acme:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      role: "{{ env_var('SNOWFLAKE_ROLE', 'DBT_RUNNER_DEV') }}"
+      database: ACME_DEV
+      warehouse: ACME_WH_XS
+      schema: STAGING
+      threads: 4

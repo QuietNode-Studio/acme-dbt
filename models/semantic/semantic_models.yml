@@ -1,0 +1,40 @@
+version: 2
+
+semantic_models:
+  - name: orders
+    description: Order-grain semantic model — the business meaning of fct_orders.
+    model: ref('fct_orders')
+    defaults:
+      agg_time_dimension: order_date
+    entities:
+      - name: order
+        type: primary
+        expr: order_id
+      - name: customer
+        type: foreign
+        expr: customer_id
+    dimensions:
+      - name: order_date
+        type: time
+        type_params:
+          time_granularity: day
+      - name: status
+        type: categorical
+      - name: customer_segment
+        type: categorical
+    measures:
+      - name: revenue
+        description: Order amount in USD. Staging owns the cents-to-dollars conversion; if this number drifts 100x, look there first.
+        agg: sum
+        expr: amount
+
+metrics:
+  - name: total_revenue
+    label: Total revenue (USD)
+    description: >
+      Sum of order amounts in USD across all orders. Finance's reference
+      expectation for the seeded dev estate is on the order of $2.5M/year —
+      a 100x jump means the cents conversion broke upstream of this metric.
+    type: simple
+    type_params:
+      measure: revenue

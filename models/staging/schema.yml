@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: Orders normalized to analytics conventions. amount is DOLLARS (converted from amount_cents here and only here).
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: Every order belongs to a known customer — nulls here mean the staging layer broke, not the data.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: status
+        tests:
+          - accepted_values:
+              values: [delivered, shipped, processing, returned, cancelled]
+      - name: amount
+        tests:
+          - not_null
+
+  - name: stg_customers
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null

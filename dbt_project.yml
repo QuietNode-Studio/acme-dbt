@@ -1,0 +1,19 @@
+name: acme_analytics
+version: 1.0.0
+config-version: 2
+
+profile: acme
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+target-path: target
+clean-targets: [target, dbt_packages]
+
+models:
+  acme_analytics:
+    staging:
+      +materialized: view
+      +schema: STAGING
+    marts:
+      +materialized: table
+      +schema: MARTS

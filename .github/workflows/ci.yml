@@ -1,0 +1,30 @@
+name: dbt-ci
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: dbt-dev-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+      DBT_PROFILES_DIR: .
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dbt
+        run: pip install --quiet "dbt-snowflake~=1.9.0"
+
+      - name: dbt build (dev target)
+        run: dbt build --target dev --no-use-colors

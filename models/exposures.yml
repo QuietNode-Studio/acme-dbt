@@ -1,0 +1,17 @@
+version: 2
+
+exposures:
+  - name: weekly_revenue_report
+    label: Weekly revenue report
+    type: dashboard
+    maturity: high
+    url: https://example.acme.internal/dashboards/weekly-revenue
+    description: >
+      Finance's Monday report. Reads fct_orders and the total_revenue metric.
+      If total_revenue drifts, this is the surface where the business notices.
+    depends_on:
+      - ref('fct_orders')
+      - metric('total_revenue')
+    owner:
+      name: Acme Finance Ops
+      email: prashanthsirusala2209@gmail.com
